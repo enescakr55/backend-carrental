@@ -37,6 +37,12 @@ namespace DataAccess.Concrete.InMemory
             return _cars;
         }
 
+        public Car GetById(int i)
+        {
+            Car car = _cars.SingleOrDefault(c => c.Id == i);
+            return car;
+        }
+
         public void Update(Car car)
         {
             Car carToUpdate = _cars.SingleOrDefault(c => c.Id == car.Id);
