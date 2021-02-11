@@ -1,4 +1,7 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Results.Utilities;
+using Core.Utilities.Results.DataResults;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
@@ -16,62 +19,54 @@ namespace Business.Concrete
             _carDal = carDal;
         }
 
-        public void Delete(Car car)
+        public IResult Delete(Car car)
         {
             _carDal.Delete(car);
+            return new SuccessResult(Messages.Deleted);
         }
 
-        public List<Car> GetAll()
+        public IDataResult<List<Car>> GetAll()
         {
-            return _carDal.GetAll();
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll());
         }
 
-        public Car GetById(int id)
+        public IDataResult<Car> GetById(int id)
         {
-            return _carDal.Get(p => p.Id == id);
+            return new SuccessDataResult<Car>(_carDal.Get(p => p.Id == id));
         }
 
-        public void Update(Car car)
+        public IResult Update(Car car)
         {
-            var islemOk = 1;
             if (car.CarName.Length < 2)
             {
-                islemOk = 0;
-                Console.WriteLine("Araç adı en az 2 karakter olmalıdır.");
-                throw new Exception("Araç adı en az 2 karakter olmalıdır");
+
+                return new ErrorResult(Messages.CharLenght);
+
             }
             else if (car.DailyPrice < 0)
             {
-                islemOk = 0;
-                Console.WriteLine("Araç fiyatı 0 dan büyük olmalıdır");
-                throw new Exception("Araç fiyatı 0 dan büyük olmalıdır");
+                return new ErrorResult(Messages.PriceMin);
             }
-            if (islemOk == 1)
-            {
                 _carDal.Update(car);
-            }
+                return new SuccessResult(Messages.Updated);
         }
-        public void Add(Car car)
+        public IResult Add(Car car)
         {
-            var islemOk = 1;
             if(car.CarName.Length < 2)
             {
-                islemOk = 0;
-                Console.WriteLine("Araç adı en az 2 karakter olmalıdır.");
-            }else if(car.DailyPrice < 0)
-            {
-                islemOk = 0;
-                Console.WriteLine("Araç fiyatı 0 dan büyük olmalıdır");
+                return new ErrorResult(Messages.CharLenght);
             }
-            if(islemOk == 1)
+            else if(car.DailyPrice < 0)
             {
+                return new ErrorResult(Messages.PriceMin);
+            }
                 _carDal.Add(car);
-            } 
+                return new SuccessResult(Messages.Updated);
         }
 
-        public List<CarDetailDto> GetCarDetails()
+        public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
-           return _carDal.GetCarDetails();
+           return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails());
         }
     }
 }

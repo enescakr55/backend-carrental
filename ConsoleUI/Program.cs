@@ -97,7 +97,7 @@ namespace ConsoleUI
                 case 1:
                     Console.WriteLine("----------------------------------------------------ARAÇ LİSTESİ----------------------------------------------------");
                     CarManager carManager = new CarManager(new EfCarDal());
-                    foreach (var car in carManager.GetCarDetails())
+                    foreach (var car in carManager.GetCarDetails().Data)
                     {
                         Console.WriteLine("\tAraç Id: {4}\tAraç Adı:{0}\tAraç Markası:{1}\tAraç Rengi:{2}\tKiralama Bedeli:{3}", car.CarName,car.BrandName,car.ColorName,car.DailyPrice,car.Id);
                     }
@@ -105,14 +105,14 @@ namespace ConsoleUI
                     break;
                 case 2:
                     Console.WriteLine("----------------------------------------------------MARKA LİSTESİ----------------------------------------------------");
-                    foreach (var brand in brandManager.GetAll())
+                    foreach (var brand in brandManager.GetAll().Data)
                     {
                         Console.WriteLine("Marka Id : {0}\t Marka İsmi {1}",brand.BrandId,brand.BrandName);
                     }
                     break;
                 case 3:
                     Console.WriteLine("----------------------------------------------------RENK LİSTESİ----------------------------------------------------");
-                    foreach (var color in colorManager.GetAll())
+                    foreach (var color in colorManager.GetAll().Data)
                     {
                         Console.WriteLine("Renk Id : {0}\t Renk İsmi {1}", color.ColorId, color.ColorName);
                     }

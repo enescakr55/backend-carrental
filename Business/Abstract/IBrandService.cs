@@ -1,4 +1,6 @@
-﻿using Entities.Concrete;
+﻿using Core.Results.Utilities;
+using Core.Utilities.Results.DataResults;
+using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,10 +9,10 @@ namespace Business.Abstract
 {
     interface IBrandService
     {
-        List<Brand> GetAll();
-        Brand GetById(int id);
-        void Update(Brand brand);
-        void Delete(Brand brand);
-        void Add(Brand brand);
+        IDataResult<List<Brand>> GetAll();
+        IDataResult<Brand> GetById(int id);
+        IResult Update(Brand brand);
+        IResult Delete(Brand brand);
+        IResult Add(Brand brand);
     }
 }
