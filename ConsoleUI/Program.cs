@@ -12,11 +12,14 @@ namespace ConsoleUI
         static CarManager carManager = new CarManager(new EfCarDal());
         static BrandManager brandManager = new BrandManager(new EfBrandDal());
         static ColorManager colorManager = new ColorManager(new EfColorDal());
+        static UserManager userManager = new UserManager(new EfUserDal());
+        static CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
+        static RentalManager rentalManager = new RentalManager(new EfRentalDal());
         static void Main(string[] args)
         {
             while (1 == 1)
             {
-                Console.WriteLine("İşlem seç \n1)Ekle \n2)Sil \n3)Güncelle \n4)Listele");
+                Console.WriteLine("İşlem seç \n1)Ekle \n2)Sil \n3)Güncelle \n4)Listele \n5)Kiralama İşlemleri");
                 int secim = Convert.ToInt32(Console.ReadLine());
                 switch (secim)
                 {
@@ -32,6 +35,9 @@ namespace ConsoleUI
                     case 4:
                         Listele();
                         break;
+                    case 5:
+                        try { KiralamaIslem(); } catch { Console.WriteLine("Bir hata oluştu"); };
+                        break;
                 }
                 Console.WriteLine("Çıkış yapmak ister misiniz : E/H");
                 string rk = Console.ReadLine();
@@ -42,10 +48,15 @@ namespace ConsoleUI
                 Console.Clear();
             }
         }
+        static void KiralamaIslem()
+        {
+            Console.WriteLine("1)Araba Kirala \n2)Arabayı Teslim Al");
+            Console.WriteLine("Hangi müşteriye arabayı kiralamak istersiniz");
+        }
         static void Ekle()
         {
             // 1: Araba 2:Marka 3:Renk
-            Console.WriteLine("Eklenecek öğeyi seçin\n1)Araç \n2)Marka \n3)Renk");
+            Console.WriteLine("Eklenecek öğeyi seçin\n1)Araç \n2)Marka \n3)Renk \n4)Üye \n5)Müşteri");
             int secim = Convert.ToInt32(Console.ReadLine());
             switch (secim)
             {
@@ -79,13 +90,32 @@ namespace ConsoleUI
                     Color color = new Color { ColorName = colorName };
                     colorManager.Add(color);
                     break;
+                case 4:
+                    Console.WriteLine("Üye adını girin");
+                    string uyeAdi = Console.ReadLine();
+                    Console.WriteLine("Üye soyadını girin");
+                    string uyeSoyadi = Console.ReadLine();
+                    Console.WriteLine("Üyenin e-posta adresini girin");
+                    string uyeEposta = Console.ReadLine();
+                    Console.WriteLine("Üye şifresini girin");
+                    string uyeSifre = Console.ReadLine();
+                    Console.WriteLine(userManager.Add(new User { FirstName = uyeAdi, LastName = uyeSoyadi, Email = uyeEposta, Password = uyeSifre }).Message); ;
+                    break;
+                case 5:
+                    Listele(5);
+                    Console.WriteLine("Üye Id'si girin : ");
+                    int uyeId = Convert.ToInt32(Console.ReadLine());
+                    Console.WriteLine("Şirket adı girin : ");
+                    string SirketAdi = Console.ReadLine();
+                    Console.WriteLine(customerManager.Add(new Customer { CompanyName = SirketAdi, UserId = uyeId }).Message); 
+                    break;
             }
         }
         static void Listele(int def=-1)
         {
             int secim;
             if(def == -1) { 
-            Console.WriteLine("Listelenecek öğeyi seçin\n1)Araç \n2)Marka \n3)Renk");
+            Console.WriteLine("Listelenecek öğeyi seçin\n1)Araç \n2)Marka \n3)Renk \n4)Müşteri");
             secim = Convert.ToInt32(Console.ReadLine());
             }
             else
@@ -116,6 +146,20 @@ namespace ConsoleUI
                     {
                         Console.WriteLine("Renk Id : {0}\t Renk İsmi {1}", color.ColorId, color.ColorName);
                     }
+                    break;
+                case 4:
+                    Console.WriteLine("-------------------------------------MÜŞTERİLER-------------------------");
+                    foreach (var customerDetail in customerManager.GetCustomerDetails().Data)
+                    {
+                        Console.WriteLine("Müşteri Id: {0}\tMüşteri Adı: {1}\tMüşteri Soyadı: {2}\tMüşteri EPosta:{3}",customerDetail.CustomerId,customerDetail.FirstName,customerDetail.LastName,customerDetail.Email);
+                    }
+                    break;
+                case 5:
+                    Console.WriteLine("-------------------------------------ÜYELER---------------------------------");
+                    foreach(var user in userManager.GetAll().Data)
+                    {
+                        Console.WriteLine("Üye Id: {0} \tÜye Adı: {1} \tÜye Soyadı : {2}\tÜye E-Posta : {3}",user.Id,user.FirstName,user.LastName,user.Email);
+                    };
                     break;
             }
         }
