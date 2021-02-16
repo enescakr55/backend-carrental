@@ -19,8 +19,8 @@ namespace Business.Concrete
         }
         public IResult Add(Rental rental)
         {
-            var RentalGetir = _rentalDal.GetAll(rent=>rent.CarId == rental.CarId && rent.ReturnDate == null);
-            if(RentalGetir.Count > 0)
+            var GetRentals = _rentalDal.GetAll(rent=>rent.CarId == rental.CarId && rent.ReturnDate == null);
+            if(GetRentals.Count > 0)
             {
                 return new ErrorResult(Messages.AracYok);
             }
