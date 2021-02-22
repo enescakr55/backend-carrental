@@ -1,10 +1,14 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Validation;
 using Core.Results.Utilities;
 using Core.Utilities.Results.DataResults;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -34,7 +38,7 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<Car>(_carDal.Get(p => p.Id == id));
         }
-
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Update(Car car)
         {
             if (car.CarName.Length < 2)
@@ -50,18 +54,12 @@ namespace Business.Concrete
                 _carDal.Update(car);
                 return new SuccessResult(Messages.Updated);
         }
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
         {
-            if(car.CarName.Length < 2)
-            {
-                return new ErrorResult(Messages.CharLenght);
-            }
-            else if(car.DailyPrice < 0)
-            {
-                return new ErrorResult(Messages.PriceMin);
-            }
-                _carDal.Add(car);
-                return new SuccessResult(Messages.Updated);
+            //ValidationTool.Validate(new CarValidator(), car);
+            _carDal.Add(car);
+             return new SuccessResult(Messages.Added);
         }
 
         public IDataResult<List<CarDetailDto>> GetCarDetails()
