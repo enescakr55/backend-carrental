@@ -19,6 +19,10 @@ namespace Business.Concrete
         }
         public IResult Add(CarImage carImage)
         {
+            if(ImageCount(carImage.CarId).Success == false)
+            {
+                return ImageCount(carImage.CarId);
+            }
             _carImageDal.Add(carImage);
             return new SuccessResult(Messages.Added);
         }
@@ -48,6 +52,16 @@ namespace Business.Concrete
         {
             _carImageDal.Update(carImage);
             return new SuccessResult(Messages.Updated);
+        }
+        public IResult ImageCount(int carId)
+        {
+            List<CarImage> ResimListesi = _carImageDal.GetAll(c=>c.CarId == carId);
+            int Resimsayisi = ResimListesi.Count;
+            if (Resimsayisi >= 5)
+            {
+                return new ErrorResult(Messages.ImageCountError);
+            }
+            return new SuccessResult();
         }
     }
 }

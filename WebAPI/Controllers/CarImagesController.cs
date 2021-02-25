@@ -16,43 +16,22 @@ namespace WebAPI.Controllers
     public class CarImagesController : ControllerBase
     {
         ICarImageService _carImageService;
-        IWebHostEnvironment _webHostEnvironment;
-        public CarImagesController(ICarImageService carImageService, IWebHostEnvironment webHostEnvironment)
+        public CarImagesController(ICarImageService carImageService)
         {
             _carImageService = carImageService;
-            _webHostEnvironment = webHostEnvironment;
         }
+        string ImagePath = Environment.CurrentDirectory + "\\CarImagesFolder\\";
         [HttpPost("Add")]
         public IActionResult Add([FromForm] CarImage carImage ,[FromForm] IFormFile resim)
         {
-            try
-            {
-                if(resim.Length > 0)
-                {
-                    string path = AppDomain.CurrentDomain.BaseDirectory + "Resimler\\";
-                    if (!Directory.Exists(path))
-                    {
-                        Directory.CreateDirectory(path);
-                    }
-                    FileInfo f = new FileInfo(path + resim.FileName);
-                    string uzanti = f.Extension;
-                    string randomName = Guid.NewGuid().ToString("n");
-                    string filePath = path + randomName + uzanti;
-                    using (FileStream fileStream = System.IO.File.Create(filePath))
-                    {
-                        resim.CopyTo(fileStream);
-                        fileStream.Flush();
-                    }
-                    carImage.Date = DateTime.Now;
-                    carImage.ImagePath = filePath;
-                    return Ok(_carImageService.Add(carImage));
-                }
-            }
-            catch
+            string filePath = UploadImage(resim);
+            if(filePath == "0")
             {
                 BadRequest("Bir hata oluştu");
             }
-            return null;
+            carImage.Date = DateTime.Now;
+            carImage.ImagePath = filePath;
+            return Ok(_carImageService.Add(carImage));
         }
         [HttpPost("Delete")]
         public IActionResult Delete([FromForm] CarImage carImage)
@@ -66,35 +45,51 @@ namespace WebAPI.Controllers
         [HttpPost("Update")]
         public IActionResult Update([FromForm] CarImage carImage,[FromForm] IFormFile resim)
         {
+            string filePath = UploadImage(resim);
+            if (filePath == "0")
+            {
+                BadRequest("Bir hata oluştu");
+            }
+            carImage.Date = DateTime.Now;
+            carImage.ImagePath = filePath;
+            return Ok(_carImageService.Update(carImage));
+        }
+        [HttpPost("getbycarid")]
+        public IActionResult GetByCarId([FromForm] int carId)
+        {
+            return Ok(_carImageService.GetByCarId(carId));
+        }
+        [HttpGet("getall")]
+        public IActionResult GetAll()
+        {
+            return Ok(_carImageService.GetAll());
+        }
+        public string UploadImage(IFormFile resim)
+        {
             try
             {
                 if (resim.Length > 0)
                 {
-                    CarImage carimg = _carImageService.GetById(carImage.Id).Data;
-                    string imagepath = carimg.ImagePath;
-                    System.IO.File.Delete(imagepath);
-                    string path = AppDomain.CurrentDomain.BaseDirectory + "Resimler\\";
-                    if (!Directory.Exists(path))
+                    if (!Directory.Exists(ImagePath))
                     {
-                        Directory.CreateDirectory(path);
+                        Directory.CreateDirectory(ImagePath);
                     }
-                    FileInfo f = new FileInfo(path + resim.FileName);
+                    FileInfo f = new FileInfo(ImagePath + resim.FileName);
                     string uzanti = f.Extension;
                     string randomName = Guid.NewGuid().ToString("n");
-                    string filePath = path + randomName + uzanti;
+                    string filePath = ImagePath + randomName + uzanti;
                     using (FileStream fileStream = System.IO.File.Create(filePath))
                     {
                         resim.CopyTo(fileStream);
                         fileStream.Flush();
                     }
-                    carImage.Date = DateTime.Now;
-                    carImage.ImagePath = filePath;
-                    return Ok(_carImageService.Update(carImage));
+                    return filePath;
+
                 }
             }
             catch
             {
-                return BadRequest("Bir hata oluştu");
+                return "0";
             }
             return null;
         }

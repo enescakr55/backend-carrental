@@ -13,5 +13,6 @@ namespace Business.Constants
         public static string CharLenght = "Karakter uzunluğu yetersiz.";
         public static string PriceMin = "Ücret 0 dan fazla olmalıdır.";
         public static string AracYok = "Araç elimizde yok.";
+        public static string ImageCountError = "Bir araç için maksimum 5 resim eklenebilir.";
     }
 }
