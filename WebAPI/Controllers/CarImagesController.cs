@@ -28,8 +28,8 @@ namespace WebAPI.Controllers
         [HttpPost("Delete")]
         public IActionResult Delete([FromForm] CarImage carImage)
         {
-            _carImageService.Delete(carImage);
-            return Ok();
+            
+            return Ok(_carImageService.Delete(carImage));
         }
         [HttpPost("Update")]
         public IActionResult Update([FromForm] CarImage carImage,[FromForm] IFormFile resim)

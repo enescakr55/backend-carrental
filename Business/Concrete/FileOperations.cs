@@ -9,9 +9,12 @@ namespace Business.Concrete
 {
     public static class FileOperations
     {
+        public static string ImageFolder = "/CarImages/";
+        public static string ImagePath = Directory.GetParent(Environment.CurrentDirectory) + @"\CarImages\";
         public static IResult UploadImage(IFormFile resim)
         {
-            string ImagePath = Directory.GetParent(Environment.CurrentDirectory) + "\\CarImagesFolder\\";
+
+            
             try
             {
                 if (resim.Length > 0)
@@ -29,7 +32,7 @@ namespace Business.Concrete
                         resim.CopyTo(fileStream);
                         fileStream.Flush();
                     }
-                    return new SuccessResult(filePath);
+                    return new SuccessResult(ImageFolder + randomName + uzanti);
 
                 }
             }
@@ -43,7 +46,8 @@ namespace Business.Concrete
         {
             try
             {
-                System.IO.File.Delete(Path);
+                string[] str = Path.Split('/');
+                System.IO.File.Delete(ImagePath + str[2]);
                 return new SuccessResult();
             }
             catch

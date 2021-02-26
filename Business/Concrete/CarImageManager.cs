@@ -19,6 +19,7 @@ namespace Business.Concrete
         {
             _carImageDal = carImageDal;
         }
+        public string DefaultCarImagePath = "/CarImages/default.jpg";
         public IResult Add(CarImage carImage,IFormFile resim)
         {
             var result = BusinessRules.Run(CarImageCountLessOrEqualThan5(carImage.CarId));
@@ -26,6 +27,7 @@ namespace Business.Concrete
             {
                 return result;
             }
+            
             var Upload = FileOperations.UploadImage(resim);
             if (Upload.Success)
             {
@@ -40,7 +42,8 @@ namespace Business.Concrete
 
         public IResult Delete(CarImage carImage)
         {
-            if (FileOperations.DeleteImage(carImage.ImagePath).Success)
+            var carimginfo = _carImageDal.Get(p => p.Id == carImage.Id);
+            if (FileOperations.DeleteImage(carimginfo.ImagePath).Success)
             {
                 _carImageDal.Delete(carImage);
                 return new SuccessResult(Messages.Deleted);
@@ -56,7 +59,13 @@ namespace Business.Concrete
 
         public IDataResult<List<CarImage>> GetByCarId(int id)
         {
-            return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(p => p.CarId == id));
+            var CarImages = _carImageDal.GetAll(p => p.CarId == id);
+            if(CarImages.Count == 0)
+            {
+                CarImage carImage = new CarImage { CarId = id, ImagePath = DefaultCarImagePath};
+                CarImages.Add(carImage);
+            }
+            return new SuccessDataResult<List<CarImage>>(CarImages);
         }
 
         public IDataResult<CarImage> GetById(int id)
