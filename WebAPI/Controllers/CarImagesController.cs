@@ -20,39 +20,21 @@ namespace WebAPI.Controllers
         {
             _carImageService = carImageService;
         }
-        string ImagePath = Environment.CurrentDirectory + "\\CarImagesFolder\\";
         [HttpPost("Add")]
         public IActionResult Add([FromForm] CarImage carImage ,[FromForm] IFormFile resim)
         {
-            string filePath = UploadImage(resim);
-            if(filePath == "0")
-            {
-                BadRequest("Bir hata oluştu");
-            }
-            carImage.Date = DateTime.Now;
-            carImage.ImagePath = filePath;
-            return Ok(_carImageService.Add(carImage));
+            return Ok(_carImageService.Add(carImage,resim));
         }
         [HttpPost("Delete")]
         public IActionResult Delete([FromForm] CarImage carImage)
         {
-            CarImage carimg = _carImageService.GetById(carImage.Id).Data;
-            string imagepath = carimg.ImagePath;
-            System.IO.File.Delete(imagepath);
             _carImageService.Delete(carImage);
             return Ok();
         }
         [HttpPost("Update")]
         public IActionResult Update([FromForm] CarImage carImage,[FromForm] IFormFile resim)
         {
-            string filePath = UploadImage(resim);
-            if (filePath == "0")
-            {
-                BadRequest("Bir hata oluştu");
-            }
-            carImage.Date = DateTime.Now;
-            carImage.ImagePath = filePath;
-            return Ok(_carImageService.Update(carImage));
+            return Ok(_carImageService.Update(carImage,resim));
         }
         [HttpPost("getbycarid")]
         public IActionResult GetByCarId([FromForm] int carId)
@@ -64,35 +46,7 @@ namespace WebAPI.Controllers
         {
             return Ok(_carImageService.GetAll());
         }
-        public string UploadImage(IFormFile resim)
-        {
-            try
-            {
-                if (resim.Length > 0)
-                {
-                    if (!Directory.Exists(ImagePath))
-                    {
-                        Directory.CreateDirectory(ImagePath);
-                    }
-                    FileInfo f = new FileInfo(ImagePath + resim.FileName);
-                    string uzanti = f.Extension;
-                    string randomName = Guid.NewGuid().ToString("n");
-                    string filePath = ImagePath + randomName + uzanti;
-                    using (FileStream fileStream = System.IO.File.Create(filePath))
-                    {
-                        resim.CopyTo(fileStream);
-                        fileStream.Flush();
-                    }
-                    return filePath;
 
-                }
-            }
-            catch
-            {
-                return "0";
-            }
-            return null;
-        }
 
     }
 }

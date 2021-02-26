@@ -41,16 +41,6 @@ namespace Business.Concrete
         [ValidationAspect(typeof(CarValidator))]
         public IResult Update(Car car)
         {
-            if (car.CarName.Length < 2)
-            {
-
-                return new ErrorResult(Messages.CharLenght);
-
-            }
-            else if (car.DailyPrice < 0)
-            {
-                return new ErrorResult(Messages.PriceMin);
-            }
                 _carDal.Update(car);
                 return new SuccessResult(Messages.Updated);
         }
