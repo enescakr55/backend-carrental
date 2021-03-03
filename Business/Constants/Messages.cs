@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Entities.Concrete;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -14,5 +15,12 @@ namespace Business.Constants
         public static string PriceMin = "Ücret 0 dan fazla olmalıdır.";
         public static string AracYok = "Araç elimizde yok.";
         public static string ImageCountError = "Bir araç için maksimum 5 resim eklenebilir.";
+        public static string UserNotFound = "Kullanıcı bulunamadı";
+        public static string PasswordError = "Şifre yanlış";
+        public static string SuccessfulLogin = "Giriş başarılı";
+        public static string UserExists = "Bu kullanıcı zaten mevcut.";
+        public static string UserRegistered = "Üyelik başarılı";
+        public  static string AccessTokenCreated = "Token oluşturuldu";
+        // public static string UyeYok = "Böyle bir kullanıcı yok.";
     }
 }

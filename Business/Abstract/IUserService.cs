@@ -1,4 +1,5 @@
-﻿using Core.Results.Utilities;
+﻿using Core.Entities.Concrete;
+using Core.Results.Utilities;
 using Core.Utilities.Results.DataResults;
 using Entities.Concrete;
 using System;
@@ -14,5 +15,9 @@ namespace Business.Abstract
         IResult Delete(User rental);
         IDataResult<List<User>> GetAll();
         IDataResult<User> GetById(int id);
+        IDataResult<User> GetByEmail(string email);
+
+        IDataResult<List<OperationClaim>> GetClaims(User user);
+
     }
 }

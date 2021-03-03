@@ -1,5 +1,7 @@
 ﻿using Business.Abstract;
+using Core.Entities.Concrete;
 using Entities.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -20,6 +22,7 @@ namespace WebAPI.Controllers
             _userService = userService;
         }
         [HttpGet("getall")]
+        [Authorize(Roles = "Users.List")]
         public IActionResult GetAll()
         {
             var result = _userService.GetAll();
