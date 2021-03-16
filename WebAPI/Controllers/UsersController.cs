@@ -22,7 +22,7 @@ namespace WebAPI.Controllers
             _userService = userService;
         }
         [HttpGet("getall")]
-        [Authorize(Roles = "Users.List")]
+        //[Authorize(Roles = "Users.List")]
         public IActionResult GetAll()
         {
             var result = _userService.GetAll();

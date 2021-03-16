@@ -36,8 +36,8 @@ namespace WebAPI.Controllers
         {
             return Ok(_carImageService.Update(carImage,resim));
         }
-        [HttpPost("getbycarid")]
-        public IActionResult GetByCarId([FromForm] int carId)
+        [HttpGet("getbycarid")]
+        public IActionResult GetByCarId(int carId)
         {
             return Ok(_carImageService.GetByCarId(carId));
         }

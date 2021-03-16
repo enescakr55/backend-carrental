@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects;
 using Business.Constants;
 using Core.Entities.Concrete;
 using Core.Results.Utilities;
@@ -30,6 +31,7 @@ namespace Business.Concrete
             _userDal.Delete(rental);
             return new SuccessResult(Messages.Deleted);
         }
+        [SecuredOperation("Users.List")]
         public IDataResult<List<User>> GetAll()
         {
             return new SuccessDataResult<List<User>>(_userDal.GetAll());

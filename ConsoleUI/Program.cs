@@ -99,7 +99,7 @@ namespace ConsoleUI
                     string uyeEposta = Console.ReadLine();
                     Console.WriteLine("Üye şifresini girin");
                     string uyeSifre = Console.ReadLine();
-                    Console.WriteLine(userManager.Add(new User { FirstName = uyeAdi, LastName = uyeSoyadi, Email = uyeEposta, Password = uyeSifre }).Message); ;
+                    
                     break;
                 case 5:
                     Listele(5);
