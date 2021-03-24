@@ -92,5 +92,13 @@ namespace WebAPI.Controllers
                 return Ok(result);
             return BadRequest(result);
         }
+        [HttpGet("getcarscolorandbrand")]
+        public IActionResult GetCarsColorAndBrand(int colorId,int brandId)
+        {
+            var result = _carService.GetCarsByColorAndBrand(colorId, brandId);
+            if (result.Success)
+                return Ok(result);
+            return BadRequest(result);
+        }
     }
 }
