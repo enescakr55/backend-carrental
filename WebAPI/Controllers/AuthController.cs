@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Entities.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -19,6 +20,13 @@ namespace WebAPI.Controllers
         {
             _authService = authService;
         }
+        [HttpGet("istokenactive")]
+        [Authorize]
+        
+        public IActionResult IsTokenActive()
+        {
+            return Ok(_authService.IsTokenActive());
+        }
         [HttpPost("login")]
         public IActionResult Login(UserForLoginDto userForLoginDto)
         {
@@ -30,9 +38,9 @@ namespace WebAPI.Controllers
             var result = _authService.CreateAccessToken(userToLogin.Data);
             if (result.Success)
             {
-                return Ok(result.Data);
+                return Ok(result);
             }
-            return BadRequest(result.Message);
+            return BadRequest(result);
         }
         [HttpPost("register")]
         public IActionResult Register(UserForRegisterDto userForRegisterDto)
@@ -46,9 +54,9 @@ namespace WebAPI.Controllers
             var result = _authService.CreateAccessToken(registerResult.Data);
             if (result.Success)
             {
-                return Ok(result.Data);
+                return Ok(result);
             }
-            return BadRequest(result.Message);
+            return BadRequest(result);
         }
     }
 }

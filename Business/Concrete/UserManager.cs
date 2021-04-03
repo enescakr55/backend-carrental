@@ -8,6 +8,8 @@ using DataAccess.Abstract;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
+using System.Security.Principal;
 using System.Text;
 using System.Web.Http;
 
@@ -20,15 +22,15 @@ namespace Business.Concrete
         {
             _userDal = userdal;
         }
-        public IResult Add(User rental)
+        public IResult Add(User user)
         {
-            _userDal.Add(rental);
+            _userDal.Add(user);
             return new SuccessResult(Messages.Added);
         }
 
-        public IResult Delete(User rental)
+        public IResult Delete(User user)
         {
-            _userDal.Delete(rental);
+            _userDal.Delete(user);
             return new SuccessResult(Messages.Deleted);
         }
         [SecuredOperation("Users.List")]
@@ -52,9 +54,24 @@ namespace Business.Concrete
             return new SuccessDataResult<List<OperationClaim>>(_userDal.GetClaims(user));
         }
 
-        public IResult Update(User rental)
+        public IDataResult<User> GetCurrentUser(IIdentity getidentity)
         {
-            _userDal.Update(rental);
+                string userid = null;
+                if (getidentity is ClaimsIdentity identity)
+                {
+                try { userid = identity.FindFirst(ClaimTypes.NameIdentifier).Value; } catch { userid = null; };
+                }
+                User currentUser = _userDal.Get(p => p.Id == Convert.ToInt32(userid));
+            if(userid == null)
+            {
+                return new ErrorDataResult<User>("Giriş yapılmamış");
+            }    
+            return new SuccessDataResult<User>(currentUser);
+        }
+
+        public IResult Update(User user)
+        {
+            _userDal.Update(user);
             return new SuccessResult(Messages.Updated);
         }
     }

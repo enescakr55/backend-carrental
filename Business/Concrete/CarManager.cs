@@ -25,7 +25,7 @@ namespace Business.Concrete
         {
             _carDal = carDal;
         }
-
+        [SecuredOperation("admin")]
         public IResult Delete(Car car)
         {
             _carDal.Delete(car);
@@ -41,12 +41,14 @@ namespace Business.Concrete
             return new SuccessDataResult<Car>(_carDal.Get(p => p.Id == id));
         }
         [ValidationAspect(typeof(CarValidator))]
+        [SecuredOperation("admin")]
         public IResult Update(Car car)
         {
                 _carDal.Update(car);
                 return new SuccessResult(Messages.Updated);
         }
         [ValidationAspect(typeof(CarValidator))]
+        [SecuredOperation("admin")]
         public IResult Add(Car car)
         {
             //ValidationTool.Validate(new CarValidator(), car);

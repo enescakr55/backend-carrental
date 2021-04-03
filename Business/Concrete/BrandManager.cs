@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects;
 using Business.Constants;
 using Core.Results.Utilities;
 using Core.Utilities.Results.DataResults;
@@ -18,14 +19,14 @@ namespace Business.Concrete
         {
             _brandDal = brandDal;
         }
-
+        [SecuredOperation("admin")]
         public IResult Add(Brand brand)
         {
             _brandDal.Add(brand);
             return new SuccessResult(Messages.Added);
 
         }
-
+        [SecuredOperation("admin")]
         public IResult Delete(Brand brand)
         {
             _brandDal.Delete(brand);
@@ -41,7 +42,7 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<Brand>(_brandDal.Get(b => b.BrandId == id));
         }
-
+        [SecuredOperation("admin")]
         public IResult Update(Brand brand)
         {
             _brandDal.Update(brand);

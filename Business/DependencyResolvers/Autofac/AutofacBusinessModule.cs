@@ -24,6 +24,10 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<BrandManager>().As<IBrandService>().SingleInstance();
             builder.RegisterType<RentalManager>().As<IRentalService>().SingleInstance();
             builder.RegisterType<CarImageManager>().As<ICarImageService>().SingleInstance();
+            builder.RegisterType<LoggedUserManager>().As<ILoggedUserService>().SingleInstance();
+            builder.RegisterType<CreditCardManager>().As<ICreditCardService>().SingleInstance();
+            builder.RegisterType<FindexScoreManager>().As<IFindexScoreService>().SingleInstance();
+            builder.RegisterType<RequiredScoreManager>().As<IRequiredScoreService>().SingleInstance();
             
 
             builder.RegisterType<EfRentalDal>().As<IRentalDal>().SingleInstance();
@@ -31,8 +35,11 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<EfCarDal>().As<ICarDal>().SingleInstance();
             builder.RegisterType<EfColorDal>().As<IColorDal>().SingleInstance();
             builder.RegisterType<EfCustomerDal>().As<ICustomerDal>().SingleInstance();
-            
+            builder.RegisterType<EfCreditCardDal>().As<ICreditCardDal>().SingleInstance();
             builder.RegisterType<EfCarImageDal>().As<ICarImageDal>().SingleInstance();
+            builder.RegisterType<EfRequiredScoreDal>().As<IRequiredScoreDal>().SingleInstance();
+            builder.RegisterType<EfFindexScoreDal>().As<IFindexScoreDal>().SingleInstance();
+            
            
 
             builder.RegisterType<UserManager>().As<IUserService>().SingleInstance();

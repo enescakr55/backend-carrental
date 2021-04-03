@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects;
 using Business.Constants;
 using Core.Results.Utilities;
 using Core.Utilities.Results.DataResults;
@@ -18,13 +19,13 @@ namespace Business.Concrete
         {
             _colordal = colordal;
         }
-
+        [SecuredOperation("admin")]
         public IResult Add(Color color)
         {
             _colordal.Add(color);
             return new SuccessResult(Messages.Added);
         }
-
+        [SecuredOperation("admin")]
         public IResult Delete(Color color)
         {
             _colordal.Delete(color);
@@ -40,7 +41,7 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<Color>(_colordal.Get(c => c.ColorId == id));
         }
-
+        [SecuredOperation("admin")]
         public IResult Update(Color color)
         {
             _colordal.Update(color);

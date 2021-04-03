@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects;
 using Business.Constants;
 using Core.Results.Utilities;
 using Core.Utilities.Business;
@@ -20,6 +21,7 @@ namespace Business.Concrete
             _carImageDal = carImageDal;
         }
         public string DefaultCarImagePath = "/CarImages/default.jpg";
+        //[SecuredOperation("admin")]
         public IResult Add(CarImage carImage,IFormFile resim)
         {
             var result = BusinessRules.Run(CarImageCountLessOrEqualThan5(carImage.CarId));
@@ -39,7 +41,7 @@ namespace Business.Concrete
             return new ErrorResult("Dosya yüklenemedi");
 
         }
-
+        //[SecuredOperation("admin")]
         public IResult Delete(CarImage carImage)
         {
             var carimginfo = _carImageDal.Get(p => p.Id == carImage.Id);
@@ -72,7 +74,7 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<CarImage>(_carImageDal.Get(p => p.Id == id));
         }
-
+        [SecuredOperation("admin")]
         public IResult Update(CarImage carImage, IFormFile resim)
         {
             var Upload = FileOperations.UploadImage(resim);

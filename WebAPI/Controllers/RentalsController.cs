@@ -38,6 +38,7 @@ namespace WebAPI.Controllers
         [HttpPost("add")]
         public IActionResult Add(Rental rental)
         {
+
             var result = _rentalService.Add(rental);
             if (result.Success)
                 return Ok(result);

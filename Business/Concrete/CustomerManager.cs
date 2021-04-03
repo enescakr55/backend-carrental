@@ -41,6 +41,17 @@ namespace Business.Concrete
             return new SuccessDataResult<Customer>(_customerDal.Get(c => c.Id == id));
         }
 
+        public IDataResult<Customer> GetByUserIdOrCreate(int userid)
+        {
+            Customer customer = _customerDal.Get(c => c.UserId == userid);
+            if(customer == null)
+            {
+                _customerDal.Add(new Customer { UserId = userid });
+                customer = _customerDal.Get(c => c.UserId == userid);
+            }
+            return new SuccessDataResult<Customer>(customer);
+        }
+
         public IDataResult<List<CustomerDetailDto>> GetCustomerDetails()
         {
             return new SuccessDataResult<List<CustomerDetailDto>>(_customerDal.GetCustomerDetails());
