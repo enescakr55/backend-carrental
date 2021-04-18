@@ -9,4 +9,4 @@ Projede Yetki ve Rol ile doğrulama yapılabilir.
 Kullanıcı doğrulama için JWT kullanılmıştır.
 
 
-Frontend Projesi https://github.com/enescakr55/ReCapProject adresindedir. Readme dosyasında projeye ait görseller bulunmaktadır.
+Frontend Projesi https://github.com/enescakr55/frontend-carrental adresindedir. Readme dosyasında projeye ait görseller bulunmaktadır.
