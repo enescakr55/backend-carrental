@@ -4,7 +4,7 @@ Araç Kiralama Projesi Backend Projesi \ C# dili ile yazılmıştır.
 
 <h3>Tanıtım</h3>
 Proje bir araç kiralama projesidir.
-Projede KATMANLI MİMARİLER ile ve SOLİD PRENSİPLERİNE uygun yazılmıştır.
+Proje KATMANLI MİMARİLER ile ve SOLİD PRENSİPLERİNE uygun yazılmıştır.
 Projede Yetki ve Rol ile doğrulama yapılabilir.
 Kullanıcı doğrulama için JWT kullanılmıştır.
 
