@@ -1,6 +1,5 @@
 # ReCapProject
-Car Rental - Backend Project
-Araç Kiralama Projesi Backend Projesi \ C# dili ile yazılmıştır.
+Car Rental - Backend Project (C#)
 
 <h3>Tanıtım</h3>
 Proje bir araç kiralama projesidir.
